@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using CoreData.Models;
 using CoreData.Resources;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,6 +8,14 @@ namespace CoreData.Controllers
     [Route("api/[controller]")]
     public class ConnectionProfileController : Controller
     {
+        private readonly BloggingContext ctx;
+
+        public ConnectionProfileController(BloggingContext context)
+        {
+            ctx = context;
+        }
+
+        
         // GET api/values
         [HttpGet]
         public IEnumerable<ConnectionProfile> Get()
@@ -24,13 +30,15 @@ namespace CoreData.Controllers
         [HttpGet("{id}")]
         public string Get(int id)
         {
-            return "value";
+           return ctx.Blogs.Find(1).Url;
         }
 
         // POST api/values
         [HttpPost]
         public void Post([FromBody]string value)
         {
+            ctx.Blogs.Add(new Blog{Url="Test"});
+             ctx.SaveChanges();
         }
 
         // PUT api/values/5
